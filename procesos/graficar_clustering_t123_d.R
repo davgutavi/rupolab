@@ -1,61 +1,63 @@
 #Rutina para graficar los resultados del clustering sobre el dataset t123_d
-#require("reshape2")
-#require(ggrepel)
-# t123_454d_all <- read.parquet(path_t123_454d_all)
-# t123_454d_con <- read.parquet(path_t123_454d_con)
-# t123_454d_nrl <- read.parquet(path_t123_454d_nrl)
-# t123_364d_all <- read.parquet(path_t123_364d_all)
-# t123_364d_con <- read.parquet(path_t123_364d_con)
-# t123_364d_nrl <- read.parquet(path_t123_364d_nrl)
-# t123_454d_all_slo <- read.parquet(path_t123_454d_all_slo)
-# t123_454d_con_slo <- read.parquet(path_t123_454d_con_slo)
-# t123_454d_nrl_slo <- read.parquet(path_t123_454d_nrl_slo)
-# t123_364d_all_slo <- read.parquet(path_t123_364d_all_slo)
-# t123_364d_con_slo <- read.parquet(path_t123_364d_con_slo)
-# t123_364d_nrl_slo <- read.parquet(path_t123_364d_nrl_slo)
+
+# Para un experimento de clasificación:
+# - Matriz de confusión: pie chart
+# - Medidas de validación: barplot
+# - Curvas: conversor pendiente-consumo + linechart
+
+# Comparación de experimentos:
+# - Matriz de confusión: radar, linechart
+# - Medidas de validación: radar, linechart
+
+# Clustering:
+# - Centroides (sólo valores reales y max): linechart 
+# - Caracterización sobre el total: multi piechart
+# - Caracterización sobre el cluster: multi piechart
+
+# Para documentación de comparación de modelos:
+# - LATEX: Matriz de confusión: filas: variables, columnas: modelos
+# - LATEX: Medidas de validación: filas: variables, columnas: modelos
 
 source("api/carga_paquetes_variables_globales.R")
 source("api/graficas_dataset_t123_d.R")
 
+#######################################################################################################
 
-#Paths datasets completos
-path364d <-"/Users/davgutavi/Desktop/endesa_pendientes_fourier/datasets/t123_364d"
-path454d <-"/Users/davgutavi/Desktop/endesa_pendientes_fourier/datasets/t123_454d"
 
-#Entradas clustering
-clu_exp_path <- "/Users/davgutavi/Desktop/endesa_pendientes_fourier/clustering/t123_364d_pen_01"
 
-#Entradas clasificación
-cla_exp_path <-"/Users/davgutavi/Desktop/endesa_pendientes_fourier/clasificacion/t123_364d_pen_10"
-rcampPath <-paste0(cla_exp_path,"/t123_364d_pen_10_rcamp")
-rtestPath <-paste0(cla_exp_path,"/t123_364d_pen_10_rtest")
 
-#**********************Carga de resultados
-l<-loadClasificationResults(cla_exp_path)
 
-rtest<-l[[1]]
-rcamp<-l[[2]]
-study<-l[[3]]
 
-#**********************Graficar la matriz de confusión
-lcm <- confusionMatrixPieChart(study)
 
-plot(lcm[[1]])
-plot(lcm[[2]])
 
-#**********************Graficar las medidas basadas en la matriz de confusión
-lms <- measuresBarChart(study)
 
-plot(lms[[1]])
-plot(lms[[2]])
+
+#######################################################################################################
+#**********************Graficar la matriz de confusión y las medidas de validación para comparación de experimentos
+e1<-loadClasificationResults(clasificacion_364d_con)
+e2<-loadClasificationResults(clasificacion_364d_nrl)
+e3<-loadClasificationResults(clasificacion_454d_con)
+e4<-loadClasificationResults(clasificacion_454d_nrl)
+
+experiments<-joinExperiments(list(e1,e2,e3,e4))
+
+test<-experiments[[1]]
+field<-experiments[[2]]
+
+gr2<-experimentsCfMatrixBarChart(c("tn","fn","fp","tp"),test)
+print(gr2)
+
+gr3<-experimentsCfMatrixBarChart(c("tpr","tnr","ppv","npv","fnr","fpr","fdr","for","acc","f1","mcc","bm","mk"),test)
+print(gr3)
+#**********************Graficar un porcentaje de las curvas de consumo de los resultados
+g1<-getGraphCurves(ct_fp,percentage = 0.3)
+print(g1)
 
 #**********************Transformar los resultados de modelos de pendientes en valores de consumo
-dataset<-read.df(path364d)
-rt <- read.df(rcampPath)
-rc <- read.df(rtestPath)
+dataset<-read.df(path_t123_364d_con)
 
-ct <- getConfusionSetsFromSlopes(dataset,rt)
-cc <- getConfusionSetsFromSlopes(dataset,rc)
+ct <- getConfusionSetsFromSlopes(dataset,rtest)
+cc <- getConfusionSetsFromSlopes(dataset,rcamp)
 
 ct_legal <- ct[[1]]
 NROW(ct_legal)
@@ -69,13 +71,22 @@ ct_fp    <- ct[[5]]
 NROW(ct_fp)
 ct_tp    <- ct[[6]]
 NROW(ct_tp)
+#**********************Graficar las medidas basadas en la matriz de confusión
+lms <- measuresBarChart(study)
 
-#**********************Graficar un porcentaje de las curvas de consumo de los resultados
+plot(lms[[1]])
+plot(lms[[2]])
+#**********************Graficar la matriz de confusión
+lcm <- confusionMatrixPieChart(study)
 
-g1<-getGraphCurves(ct_fp,percentage = 0.1)
-print(g1)
+plot(lcm[[1]])
+plot(lcm[[2]])
+#**********************Carga de resultados clasificación
+experiment<-loadClasificationResults(clasificacion_364d_con)
+
+rtest<-experiment[[1]]
+rcamp<-experiment[[2]]
+study<-experiment[[3]]
 
 #######################################################################################################
-
-
 sparkR.stop()

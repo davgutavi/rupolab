@@ -4,8 +4,6 @@ loadClasificationResults <- function(path){
   
   filePaths <- dir(path)
   
-  show(filePaths)
-  
   l <- list()
   
   for (p in filePaths){
@@ -13,26 +11,32 @@ loadClasificationResults <- function(path){
     ln <- strsplit(p,"_")[[1]]
     
     name <- ln[length(ln)]
+    #print(name)
     
     switch(name, 
            
            rtest={
-             rtestPath = paste0(cla_exp_path,"/",p)
+             
+             rtestPath = paste0(path,"/",p)
+             print(rtestPath)
              sdf2 <- read.parquet(rtestPath)
-             l[[1]]<-sdf2
-             print("case 3")    
+             l[[1]]<-sdf2    
            },
            rcamp={
-             rcampPath = paste0(cla_exp_path,"/",p)
+             rcampPath = paste0(path,"/",p)
+             print(rcampPath)
              sdf1 <- read.parquet(rcampPath)
-             l[[2]]<-sdf1
-             print("case 2")    
+             l[[2]]<-sdf1    
            },
-           study.csv={
-             studyPath = paste0(cla_exp_path,"/",p)
-             df <- read.csv(studyPath,header = TRUE, sep = ";")
-             l[[3]]<-df
-             print("case 4")    
+           study={
+             studyPath = paste0(path,"/",p)
+             print(studyPath)
+             sdf <- read.df(studyPath,header = TRUE,source="csv", sep = ";")
+             df<-as.data.frame(sdf)
+             aux<-fromStringToNumberDF(df[,2:18])
+             r<-cbind(df[1],aux)
+             colnames(r)[1]<-"tipo"
+             l[[3]]<-r
            }
     )
     
@@ -178,18 +182,96 @@ getGraphCurves<-function (consumValues, percentage = 1.0){
             scale_x_discrete(labels=cols,limits=lim)
           
           return(g)
+}
+
+
+
+experimentsCfMatrixBarChart<-function(variables,values){
+  
+  df<-values[,c("tipo",variables)]
+  
+  a <- tdf(df,variables)
+  
+  g <- melt(a,"measure")
+  
+  gr<-ggplot(g, aes(x=variable,y=value,fill=variable)) + 
+    geom_bar( stat="identity") +    
+    theme(legend.position="none")+
+    labs(x="value",y="experiments")+
+    facet_wrap(~measure,scales = "free")
+  
+  return(gr)
+
+}
+
+
+joinExperiments <- function(experiments){
+ 
+  t <- (experiments[[1]])[[3]]
+  t[1,1]<-paste0("test_",1)
+  t[2,1]<-paste0("field_",1)
+  
+  test  <- t[1,]
+  field <- t[2,]
+  
+   
+  for(i in 2:length(experiments)){
+    
+    s <- (experiments[[i]])[[3]]
+    
+    s[1,1]<-paste0("test_",i)
+    s[2,1]<-paste0("field_",i)
+    
+    test<-rbind.data.frame(test,s[1,])
+    field<- rbind.data.frame(field,s[2,])
+    
+    i<- i+1
+  }
+  
+  l<-list(test,field)
+  
+  return(l)
+  
+}
+
+
+fromStringToNumberDF<-function(df){
   
   
+  a <- data.frame(as.numeric(df[,1]))
+  colnames(a)[1]<-names(df)[1]
   
+  for (i in 2:ncol(df)){
+    
+   
+     a<-cbind(a,as.numeric(df[,i]))
+     colnames(a)[i]<-names(df)[i]
+     
+  }
   
-  
+  return(a)
   
   
 }
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
