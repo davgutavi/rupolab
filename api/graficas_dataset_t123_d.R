@@ -146,6 +146,8 @@ getConfusionSetsFromSlopes<- function (sourceDataset, solutionDataset){
   
 }
 
+
+
 getGraphCurves<-function (consumValues, percentage = 1.0){
     ndays <- NCOL(consumValues)-1
   
@@ -188,7 +190,6 @@ getGraphCurves<-function (consumValues, percentage = 1.0){
   
   
   
-
 
 
 
