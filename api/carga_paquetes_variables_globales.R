@@ -37,11 +37,23 @@ rootLocalClasificacion <-"/Users/davgutavi/Desktop/endesa/clasificacion/"
 rootLocalClustering <-"/Users/davgutavi/Desktop/endesa/clustering/"
 
 
-#*******************************************EXPERIMETS
-clustering_01 <- paste0(rootLocalClustering,"t123_364d_pen_01")
-clustering_02 <- paste0(rootLocalClustering,"t123_364d_pen_02")
-clustering_03 <- paste0(rootLocalClustering,"t123_364d_pen_03")
-clustering_04 <- paste0(rootLocalClustering,"t123_364d_pen_04")
+#*******************************************CLUSTERING EXPERIMETS
+
+pathL_454d_raw_umr_kmeans<-paste0(rootLocalClustering,"little_454d_raw_umr_kmeans")
+pathL_454d_raw_con_kmeans<-paste0(rootLocalClustering,"little_454d_raw_con_kmeans")
+pathL_454d_max_umr_kmeans<-paste0(rootLocalClustering,"little_454d_max_umr_kmeans")
+pathL_454d_max_con_kmeans<-paste0(rootLocalClustering,"little_454d_max_con_kmeans")
+pathL_454d_slo_umr_kmeans<-paste0(rootLocalClustering,"little_454d_slo_umr_kmeans")
+pathL_454d_slo_con_kmeans<-paste0(rootLocalClustering,"little_454d_slo_con_kmeans")
+
+pathL_364d_slo_umr_kmeans<-paste0(rootLocalClustering,"little_364d_raw_umr_kmeans")
+pathL_364d_slo_con_kmeans<-paste0(rootLocalClustering,"little_364d_raw_con_kmeans")
+pathL_364d_raw_umr_kmeans<-paste0(rootLocalClustering,"little_364d_max_umr_kmeans")
+pathL_364d_raw_con_kmeans<-paste0(rootLocalClustering,"little_364d_max_con_kmeans")
+pathL_364d_max_umr_kmeans<-paste0(rootLocalClustering,"little_364d_slo_umr_kmeans")
+pathL_364d_max_con_kmeans<-paste0(rootLocalClustering,"little_364d_slo_con_kmeans")
+
+#*******************************************CLASIFICATION EXPERIMETS
 
 clasificacion_01 <- paste0(rootLocalClasificacion,"t123_364d_pen_02")
 clasificacion_02 <- paste0(rootLocalClasificacion,"t123_364d_pen_04")
@@ -54,32 +66,21 @@ clasificacion_454d_con <- paste0(rootLocalClasificacion,"s_454d_con_slo")
 clasificacion_454d_nrl <- paste0(rootLocalClasificacion,"s_454d_nrl_slo")
 
 #*******************************************DATASETS ROOTS
-path_t123_454d_all <- paste0(rootHDFSdatasets,"t123_454d_all")
-path_t123_454d_con <- paste0(rootHDFSdatasets,"t123_454d_con")
-path_t123_454d_nrl <- paste0(rootHDFSdatasets,"t123_454d_nrl")
-path_t123_454d_all_slo <- paste0(rootHDFSdatasets,"t123_454d_all_slo")
-path_t123_454d_con_slo <- paste0(rootHDFSdatasets,"t123_454d_con_slo")
-path_t123_454d_nrl_slo <- paste0(rootHDFSdatasets,"t123_454d_nrl_slo")
 
-path_t123_364d_all <- paste0(rootHDFSdatasets,"t123_364d_all")
-path_t123_364d_con <- paste0(rootHDFSdatasets,"t123_364d_con")
-path_t123_364d_nrl <- paste0(rootHDFSdatasets,"t123_364d_nrl")
-path_t123_364d_all_slo <- paste0(rootHDFSdatasets,"t123_364d_all_slo")
-path_t123_364d_con_slo <- paste0(rootHDFSdatasets,"t123_364d_con_slo")
-path_t123_364d_nrl_slo <- paste0(rootHDFSdatasets,"t123_364d_nrl_slo")
+path_454d_raw_umr<- paste0(rootLocalDatasets,"454d_raw_umr/454d_raw_umr")
+path_454d_raw_con<- paste0(rootLocalDatasets,"454d_raw_con/454d_raw_con")
+path_454d_max_umr<- paste0(rootLocalDatasets,"454d_max_umr/454d_max_umr")
+path_454d_max_con<- paste0(rootLocalDatasets,"454d_max_con/454d_max_con")
+path_454d_slo_umr<- paste0(rootLocalDatasets,"454d_slo_umr/454d_slo_umr")
+path_454d_slo_con<- paste0(rootLocalDatasets,"454d_slo_con/454d_slo_con")
 
-# t123_454d_all <- read.parquet(path_t123_454d_all)
-# t123_454d_con <- read.parquet(path_t123_454d_con)
-# t123_454d_nrl <- read.parquet(path_t123_454d_nrl)
-# t123_364d_all <- read.parquet(path_t123_364d_all)
-# t123_364d_con <- read.parquet(path_t123_364d_con)
-# t123_364d_nrl <- read.parquet(path_t123_364d_nrl)
-# t123_454d_all_slo <- read.parquet(path_t123_454d_all_slo)
-# t123_454d_con_slo <- read.parquet(path_t123_454d_con_slo)
-# t123_454d_nrl_slo <- read.parquet(path_t123_454d_nrl_slo)
-# t123_364d_all_slo <- read.parquet(path_t123_364d_all_slo)
-# t123_364d_con_slo <- read.parquet(path_t123_364d_con_slo)
-# t123_364d_nrl_slo <- read.parquet(path_t123_364d_nrl_slo)
+path_364d_raw_umr<- paste0(rootLocalDatasets,"364d_raw_umr/364d_raw_umr")
+path_364d_raw_con<- paste0(rootLocalDatasets,"364d_raw_con/364d_raw_con")
+path_364d_raw_umr<- paste0(rootLocalDatasets,"364d_max_umr/364d_max_umr")
+path_364d_raw_con<- paste0(rootLocalDatasets,"364d_max_con/364d_max_con")
+path_364d_slo_umr<- paste0(rootLocalDatasets,"364d_slo_umr/364d_slo_umr")
+path_364d_slo_con<- paste0(rootLocalDatasets,"364d_slo_con/364d_slo_con")
+
 
 #******************************************OLD
 database_parquet <- paste0(rootHDFS,"database_parquet/")

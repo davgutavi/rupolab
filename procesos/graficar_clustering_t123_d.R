@@ -24,6 +24,78 @@ source("api/graficas_dataset_t123_d.R")
 #######################################################################################################
 
 
+filePaths <- dir(pathL_454d_raw_umr_kmeans,full.names = T)
+
+nmodels<- length(filePaths)/3
+
+models<- list()
+
+for(i in 1:nmodels){
+  
+  models[[i]]<-loadClusteringModelByIndex(i,filePaths)
+  print(paste0("model ",i," loaded"))
+}
+
+
+c2<-loadClusteringModelByIndex(2,filePaths)
+
+
+loadClusteringModelByIndex <-function(clusteringModelIndex,modelPathsList){
+  
+  if(clusteringModelIndex>length(modelPathsList)/3){
+    return("Error")
+  }
+  
+  else{
+  
+  cenFileIndex <- clusteringModelIndex*3-2
+  cluFileIndex <- cenFileIndex+1
+  stdFileIndex <- cluFileIndex+1
+  
+  #print(paste0(cenFileIndex,"-",cluFileIndex,"-",stdFileIndex))
+  
+  cenPath <- modelPathsList[[cenFileIndex]]
+  cluPath <- modelPathsList[[cluFileIndex]]
+  stdPath <- modelPathsList[[stdFileIndex]]
+  
+  #print(paste0(cenPath,"-",cluPath,"-",stdPath))
+  
+  cen<-read.csv(cenPath,sep=";",header=F)
+  #clu<-as.data.frame(read.parquet(cluPath))
+  clu<-read.parquet(cluPath)
+  std<-read.csv(stdPath,header=T,sep=";")
+  
+  return(list(cen=cen,clu=clu,std=std))
+  
+}
+}  
+
+
+
+getClusteringModelNumber<-function (rootPath){
+  
+  ln <- strsplit(rootPath,"_",fixed=T)[[1]]
+  
+  r <- ln[length(ln)-1]
+  
+  return(r)
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
