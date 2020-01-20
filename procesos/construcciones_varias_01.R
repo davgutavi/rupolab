@@ -3,6 +3,13 @@
 #Construcción LR dates
 #Pruebas sobre t16
 
+
+
+
+
+
+
+
 library(SparkR)
 source("paths.R")
 sparkR.session(master = "local[*]", sparkConfig = list(spark.local.dir="/mnt/datos/tempSparkR",spark.driver.memory="8g",spark.network.timeout="10000000s",spark.executor.heartbeatInterval="10000000s"))

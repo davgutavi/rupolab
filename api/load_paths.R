@@ -1,5 +1,5 @@
 rootHDFSdatasets <- "hdfs://192.168.47.247/user/datos/endesa/datasets/"
-rootLocalDatasets <-"/Users/davgutavi/NAS_DAVGUTAVI/endesa/investigacion_paper/datasets/"
+rootLocalDatasets <-"/Users/davgutavi/NAS_PROYECTOS/smartfd/investigacion/datasets/"
 rootLocalClasificacion <-"/Users/davgutavi/NAS_DAVGUTAVI/endesa/investigacion_paper/clasificacion/"
 rootLocalClustering <-"/Users/davgutavi/NAS_DAVGUTAVI/endesa/investigacion_paper/clustering/"
 
